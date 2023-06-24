@@ -1,64 +1,125 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ShoppingListApp());
+  runApp(MyApp());
 }
 
-class ShoppingListApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shopping List',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ShoppingListScreen(),
+      title: 'Counter App',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: CounterApp(),
     );
   }
 }
 
-class ShoppingListScreen extends StatelessWidget {
-  const ShoppingListScreen({super.key});
+class CounterApp extends StatefulWidget {
+  @override
+  _CounterAppState createState() => _CounterAppState();
+}
+
+class _CounterAppState extends State<CounterApp> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+      if (_counter == 5) {
+        _showCounterDialog();
+      } else if (_counter == 10) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SecondScreen()),
+        );
+      }
+    });
+  }
+
+  void _decrementCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
+
+  void _showCounterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Counter value is 5!'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Shopping List'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              _showSnackBar(context, 'Cart is empty');
-            },
-          ),
-        ],
+        title: Text('Counter App'),
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-        children: [
-          _buildShoppingItem(Icons.shopping_basket, 'Milk'),
-          _buildShoppingItem(Icons.shopping_basket, 'Bread'),
-          _buildShoppingItem(Icons.shopping_basket, 'Eggs'),
-          _buildShoppingItem(Icons.shopping_basket, 'Apples'),
-          _buildShoppingItem(Icons.shopping_basket, 'Bananas'),
-
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'Counter Value:',
+              style: TextStyle(fontSize: 24),
+            ),
+            Text(
+              '$_counter',
+              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  child: ElevatedButton(
+                    child: Text('Increment +'),
+                    onPressed: _incrementCounter,
+                  ),
+                ),
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Decrement -'),
+                    onPressed: _decrementCounter,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildShoppingItem(IconData icon, String name) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(name),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
+class SecondScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Congratulations! You reached 10!',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }
