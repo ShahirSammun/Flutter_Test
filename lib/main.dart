@@ -1,65 +1,100 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ShoppingListApp());
+  runApp(MyApp());
 }
 
-class ShoppingListApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shopping List',
+      title: 'Flutter App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.yellow,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+
       ),
-      home: ShoppingListScreen(),
+      home: MyHomePage(),
     );
   }
 }
 
-class ShoppingListScreen extends StatelessWidget {
-  const ShoppingListScreen({super.key});
-
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Shopping List'),
+        backgroundColor: Colors.blue,
+        elevation: 4.0,
+        centerTitle: true,
+        title: Text('My App'),
         actions: [
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: Icon(Icons.search),
             onPressed: () {
-              _showSnackBar(context, 'Cart is empty');
+
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+
             },
           ),
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-        children: [
-          _buildShoppingItem(Icons.shopping_basket, 'Milk'),
-          _buildShoppingItem(Icons.shopping_basket, 'Bread'),
-          _buildShoppingItem(Icons.shopping_basket, 'Eggs'),
-          _buildShoppingItem(Icons.shopping_basket, 'Apples'),
-          _buildShoppingItem(Icons.shopping_basket, 'Bananas'),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Container(
+              height: 145,
+              color: Colors.black,
+              child: Center(
+                child: Text(
+                  'Custom Message',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Menu Item 1'),
+              onTap: () {
 
-        ],
+              },
+            ),
+            ListTile(
+              title: Text('Menu Item 2'),
+              onTap: () {
+
+              },
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildShoppingItem(IconData icon, String name) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(name),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
+      body: Center(
+        child: Text(
+          'Hello, Flutter!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+
+        },
+        backgroundColor: Colors.red,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }
