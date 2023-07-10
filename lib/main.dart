@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Recipe'),
+        title: const Text('Food Recipes'),
       ),
       body: Scrollbar(
         thickness: 10,
