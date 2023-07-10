@@ -1,129 +1,97 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
+main() {
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Recipe App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: RecipeListPage(),
+    return const MaterialApp(
+      home: HomeScreen(),
     );
   }
 }
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-class RecipeListPage extends StatefulWidget {
   @override
-  _RecipeListPageState createState() => _RecipeListPageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _RecipeListPageState extends State<RecipeListPage> {
-  List<Recipe> recipes = [];
+class _HomeScreenState extends State<HomeScreen> {
+  var recipes = [
+    {
+      "title": "Pasta Carbonara",
+      "description": "Creamy pasta dish with bacon and cheese.",
+      "ingredients": ["spaghetti", "bacon", "egg", "cheese"]
+    },
+    {
+      "title": "Caprese Salad",
+      "description":
+      "Simple and refreshing salad with tomatoes, mozzarella, and basil.",
+      "ingredients": ["tomatoes", "mozzarella", "basil"]
+    },
+    {
+      "title": "Banana Smoothie",
+      "description": "Healthy and creamy smoothie with bananas and milk.",
+      "ingredients": ["bananas", "milk"]
+    },
+    {
+      "title": "Chicken Stir-Fry",
+      "description": "Quick and flavorful stir-fried chicken with vegetables.",
+      "ingredients": ["chicken breast", "broccoli", "carrot", "soy sauce"]
+    },
+    {
+      "title": "Grilled Salmon",
+      "description": "Delicious grilled salmon with lemon and herbs.",
+      "ingredients": ["salmon fillet", "lemon", "olive oil", "dill"]
+    },
+    {
+      "title": "Vegetable Curry",
+      "description": "Spicy and aromatic vegetable curry.",
+      "ingredients": ["mixed vegetables", "coconut milk", "curry powder"]
+    },
+    {
+      "title": "Berry Parfait",
+      "description": "Layered dessert with fresh berries and yogurt.",
+      "ingredients": ["berries", "yogurt", "granola"]
+    },
+  ];
 
   @override
   void initState() {
     super.initState();
-    loadRecipes();
-  }
-
-  void loadRecipes() {
-    String jsonText = '''
-    {
-      "recipes": [
-        {
-          "title": "Pasta Carbonara",
-          "description": "Creamy pasta dish with bacon and cheese.",
-          "ingredients": ["spaghetti", "bacon", "egg", "cheese"]
-        },
-        {
-          "title": "Caprese Salad",
-          "description": "Simple and refreshing salad with tomatoes, mozzarella, and basil.",
-          "ingredients": ["tomatoes", "mozzarella", "basil"]
-        },
-        {
-          "title": "Banana Smoothie",
-          "description": "Healthy and creamy smoothie with bananas and milk.",
-          "ingredients": ["bananas", "milk"]
-        },
-        {
-          "title": "Chicken Stir-Fry",
-          "description": "Quick and flavorful stir-fried chicken with vegetables.",
-          "ingredients": ["chicken breast", "broccoli", "carrot", "soy sauce"]
-        },
-        {
-          "title": "Grilled Salmon",
-          "description": "Delicious grilled salmon with lemon and herbs.",
-          "ingredient": ["salmon fillet", "lemon", "olive oil", "dill"]
-        },
-        {
-          "title": "Vegetable Curry",
-          "description": "Spicy and aromatic vegetable curry.",
-          "ingredients": ["mixed vegetables", "coconut milk", "curry powder"]
-        },
-        {
-          "title": "Berry Parfait",
-          "description": "Layered dessert with fresh berries and yogurt.",
-          "ingredients": ["berries", "yogurt", "granola"]
-        }
-      ]
-    }
-    ''';
-
-    Map<String, dynamic> jsonData = jsonDecode(jsonText);
-    List<dynamic> recipeList = jsonData['recipes'];
-
-    setState(() {
-      recipes = recipeList.map((json) => Recipe.fromJson(json)).toList();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipes'),
+        title: const Text('Food Recipe'),
       ),
-      body: ListView.builder(
-        itemCount: recipes.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(recipes[index].title),
-            onTap: () {
-              // Handle recipe item tap
-              // You can navigate to a recipe detail page or perform any desired action
-            },
-          );
-        },
+      body: Scrollbar(
+        thickness: 10,
+        child: ListView.builder(
+          itemCount: recipes.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(
+                recipes[index]['title'].toString(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                recipes[index]['description'].toString(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(Icons.fastfood),
+            );
+          },
+        ),
       ),
-    );
-  }
-}
-
-class Recipe {
-  final String title;
-  final String description;
-  final List<String> ingredients;
-
-  Recipe({
-    required this.title,
-    required this.description,
-    required this.ingredients,
-  });
-
-  factory Recipe.fromJson(Map<String, dynamic> json) {
-    return Recipe(
-      title: json['title'],
-      description: json['description'],
-      ingredients: List<String>.from(json['ingredients']),
     );
   }
 }
