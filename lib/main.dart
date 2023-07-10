@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -10,79 +12,118 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Contact List',
+      title: 'Recipe App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ContactListScreen(),
+      home: RecipeListPage(),
     );
   }
 }
 
-class Contact {
-  final String name;
-  final String email;
-  final String phoneNumber;
-
-  Contact({
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
-  });
+class RecipeListPage extends StatefulWidget {
+  @override
+  _RecipeListPageState createState() => _RecipeListPageState();
 }
 
-class ContactListScreen extends StatelessWidget {
-  final List<Contact> contacts = [
-    Contact(name: 'Shahir Sammun', email: 'shahirsammun00@gmail.com', phoneNumber: '01641204322'),
-    Contact(name: 'Rahat Alam', email: 'ralam2021@gmail.com', phoneNumber: '01701364436'),
-    Contact(name: 'Mahdi Rohan', email: 'mahdirohan21@gmail.com', phoneNumber: '01711452146'),
-  ];
+class _RecipeListPageState extends State<RecipeListPage> {
+  List<Recipe> recipes = [];
 
+  @override
+  void initState() {
+    super.initState();
+    loadRecipes();
+  }
 
+  void loadRecipes() {
+    String jsonText = '''
+    {
+      "recipes": [
+        {
+          "title": "Pasta Carbonara",
+          "description": "Creamy pasta dish with bacon and cheese.",
+          "ingredients": ["spaghetti", "bacon", "egg", "cheese"]
+        },
+        {
+          "title": "Caprese Salad",
+          "description": "Simple and refreshing salad with tomatoes, mozzarella, and basil.",
+          "ingredients": ["tomatoes", "mozzarella", "basil"]
+        },
+        {
+          "title": "Banana Smoothie",
+          "description": "Healthy and creamy smoothie with bananas and milk.",
+          "ingredients": ["bananas", "milk"]
+        },
+        {
+          "title": "Chicken Stir-Fry",
+          "description": "Quick and flavorful stir-fried chicken with vegetables.",
+          "ingredients": ["chicken breast", "broccoli", "carrot", "soy sauce"]
+        },
+        {
+          "title": "Grilled Salmon",
+          "description": "Delicious grilled salmon with lemon and herbs.",
+          "ingredients": ["salmon fillet", "lemon", "olive oil", "dill"]
+        },
+        {
+          "title": "Vegetable Curry",
+          "description": "Spicy and aromatic vegetable curry.",
+          "ingredients": ["mixed vegetables", "coconut milk", "curry powder"]
+        },
+        {
+          "title": "Berry Parfait",
+          "description": "Layered dessert with fresh berries and yogurt.",
+          "ingredients": ["berries", "yogurt", "granola"]
+        }
+      ]
+    }
+    ''';
 
-  void _showContactDetails(BuildContext context, Contact contact) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Name: ${contact.name}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text('Email: ${contact.email}',
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 8),
-              Text('Phone Number: ${contact.phoneNumber}', style: TextStyle(fontSize: 16)),
-            ],
-          ),
-        );
-      },
-    );
+    Map<String, dynamic> jsonData = jsonDecode(jsonText);
+    List<dynamic> recipeList = jsonData['recipes'];
+
+    setState(() {
+      recipes = recipeList.map((json) => Recipe.fromJson(json)).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contact List'),
+        title: Text('Recipes'),
       ),
       body: ListView.builder(
-        itemCount: contacts.length,
+        itemCount: recipes.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(contacts[index].name),
+            title: Text(recipes[index].title),
             onTap: () {
-              _showContactDetails(context, contacts[index]);
+              // Handle recipe item tap
+              // You can navigate to a recipe detail page or perform any desired action
             },
           );
         },
       ),
+    );
+  }
+}
+
+class Recipe {
+  final String title;
+  final String description;
+  final List<String> ingredients;
+
+  Recipe({
+    required this.title,
+    required this.description,
+    required this.ingredients,
+  });
+
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+    return Recipe(
+      title: json['title'],
+      description: json['description'],
+      ingredients: List<String>.from(json['ingredients']),
     );
   }
 }
