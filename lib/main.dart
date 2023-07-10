@@ -62,7 +62,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
         {
           "title": "Grilled Salmon",
           "description": "Delicious grilled salmon with lemon and herbs.",
-          "ingredients": ["salmon fillet", "lemon", "olive oil", "dill"]
+          "ingredient": ["salmon fillet", "lemon", "olive oil", "dill"]
         },
         {
           "title": "Vegetable Curry",
