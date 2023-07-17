@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-main() {
+
+void main() {
   runApp(
     const MyApp(),
   );
@@ -15,82 +16,111 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  var recipes = [
-    {
-      "title": "Pasta Carbonara",
-      "description": "Creamy pasta dish with bacon and cheese.",
-      "ingredients": ["spaghetti", "bacon", "egg", "cheese"]
-    },
-    {
-      "title": "Caprese Salad",
-      "description":
-      "Simple and refreshing salad with tomatoes, mozzarella, and basil.",
-      "ingredients": ["tomatoes", "mozzarella", "basil"]
-    },
-    {
-      "title": "Banana Smoothie",
-      "description": "Healthy and creamy smoothie with bananas and milk.",
-      "ingredients": ["bananas", "milk"]
-    },
-    {
-      "title": "Chicken Stir-Fry",
-      "description": "Quick and flavorful stir-fried chicken with vegetables.",
-      "ingredients": ["chicken breast", "broccoli", "carrot", "soy sauce"]
-    },
-    {
-      "title": "Grilled Salmon",
-      "description": "Delicious grilled salmon with lemon and herbs.",
-      "ingredients": ["salmon fillet", "lemon", "olive oil", "dill"]
-    },
-    {
-      "title": "Vegetable Curry",
-      "description": "Spicy and aromatic vegetable curry.",
-      "ingredients": ["mixed vegetables", "coconut milk", "curry powder"]
-    },
-    {
-      "title": "Berry Parfait",
-      "description": "Layered dessert with fresh berries and yogurt.",
-      "ingredients": ["berries", "yogurt", "granola"]
-    },
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Recipes'),
+        title: const Text('News Feed'),
+        centerTitle: true,
       ),
-      body: Scrollbar(
-        thickness: 10,
-        child: ListView.builder(
-          itemCount: recipes.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                recipes[index]['title'].toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 300,
+                      children: [
+                        Image.network(
+                          'https://render.fineartamerica.com/images/rendered/search/metal-print/8/6.5/break/images/artworkimages/medium/2/abstract-editable-vector-background-of-robert-adrian-hillman.jpg',
+                          height: 150,
+                          width: 150,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Image.network(
+                          'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/3/random-harvest-with-ronald-colman-and-greer-garson-1942-stars-on-art.jpg',
+                          height: 150,
+                          width: 150,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Image.network(
+                          'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/2/keith-richards-caricature-fb-newsfeed-debora-lewis.jpg',
+                          height: 150,
+                          width: 150,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Image.network(
+                          'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/2/keith-richards-caricature-fb-newsfeed-debora-lewis.jpg',
+                          height: 150,
+                          width: 150,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+
+                      ],
+                    ),
+                  )
+                ],
               ),
-              subtitle: Text(
-                recipes[index]['description'].toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              leading: const Icon(Icons.fastfood),
             );
-          },
-        ),
+          }
+
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Wrap(
+                        spacing: 300,
+                        children: [
+                          Image.network(
+                            'https://render.fineartamerica.com/images/rendered/search/metal-print/8/6.5/break/images/artworkimages/medium/2/abstract-editable-vector-background-of-robert-adrian-hillman.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Image.network(
+                            'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/3/random-harvest-with-ronald-colman-and-greer-garson-1942-stars-on-art.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Image.network(
+                            'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/2/keith-richards-caricature-fb-newsfeed-debora-lewis.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+                          Image.network(
+                            'https://render.fineartamerica.com/images/images-profile-flow/400/images/artworkimages/mediumlarge/2/keith-richards-caricature-fb-newsfeed-debora-lewis.jpg',
+                            height: 150,
+                            width: 150,
+                          ),
+
+
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
